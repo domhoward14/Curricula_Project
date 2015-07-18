@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Admin Dashboard</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.min.js"></script>
+</head>
+<body>
+     <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    </br>
+                    </br>
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Hello Admin !
+                        </h1>
+                    </div>
+                </div>
+            </div>
+     </div>
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                   <li>
+                        <a href="/newsfeed/viewAllClasses.html"><i class="fa fa-fw fa-dashboard"></i> Find Classes</a>
+                    </li>
+                    <li>
+                        <a href="/newsfeed/recommendCourse.html/"><i class="fa fa-fw fa-bar-chart-o"></i> Make Recommendations</a>
+                    </li>
+                    <li>
+                        <a href="/newsfeed/viewMembers.html"><i class="fa fa-fw fa-edit"></i> View All Members</a>
+                    </li>
+                    <li>
+                        <a href="/admin"><i class="fa fa-fw fa-dashboard"></i> Delete/Add Classes</a>
+                    </li>
+                    <li>
+                        <a href="/newsfeed/recommendLesson.html"><i class="fa fa-fw fa-edit"></i> Make Lesson Recommendations</a>
+                    </li>
+                    <li>
+                        <a href="/admin"><i class="fa fa-fw fa-dashboard"></i> Delete/Add Teacher</a>
+                    </li>
+                    <li>
+                        <a href="/admin"><i class="fa fa-fw fa-dashboard"></i> Delete/Add Students</a>
+                    </li>
+                    <li>
+                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Log Out</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+    </div>
+    <!-- /#Graphs -->
+    </br>
+    </br>
+    </br>
+    </br>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>
+                    Pending Classes
+                </h1>
+            </div>
+            <div class="col-sm-12">
+                {% if courses %}
+                    <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Course Id</th>
+                            <th>Course Name</th>
+                            <th>Professor</th>
+                            <th>Semester</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for course in courses %}
+                              <tr>
+                                <td>{{ course.course_id }}</td>
+                                <td>{{ course.course_name }}</td>
+                                <td>{{ course.professor }}</td>
+                                <td>Fall</td>
+                              <td><a href="/newsfeed/activate/{{course.slug }}" class="btn btn-info" role="button">Activate</a></td>
+                              </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+            {% else %}
+                <strong>Currently No Classes Pending</strong>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>
+                    Graph 1
+                </h1>
+            </div>
+            <div class="col-sm-12">
+                [Insert Graph here !]
+            </div>
+            <div class="col-sm-12">
+                <h1>
+                    Graph 2
+                </h1>
+            </div>
+            <div class="col-sm-12">
+                [Insert Graph here !]
+            </div>
+            <div class="col-sm-12">
+                <h1>
+                    Graph 3
+                </h1>
+            </div>
+            <div class="col-sm-12">
+                [Insert Graph here !]
+            </div>
+        </div>
+    </div>
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+</html>

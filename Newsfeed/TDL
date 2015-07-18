@@ -1,0 +1,119 @@
+http://www.tangowithdjango.com/book17/ <<<<<<Resource Link
+Pages
+I. Login Page
+	a.)existing users login
+		TDL
+			1.)Make authentication
+			2.)add header for the login page
+II. Students Page
+	a.) View active classes
+	b.) View most popular teachers
+	c.) View most popular classes
+	d.) view most popular lessons
+III.) Professor
+	a.) classes that they are teaching
+	b.) graph of their likes and dislikes
+IV.) Admin
+	a.) All pending classes table
+	b.) Bar graph of all of the professors likes and dislikes
+	c.) Bar Graph of all of the most popular classes
+	d.) Bar Graph of all of the most popular lessons
+
+	Make lessons view on the admin
+		1.)make a pending list
+		2.)and a active list
+
+
+	admin
+		1.) Make a table for all pending classes
+		2.) Top 5 Most popular classes with likes --> graph
+		3.) Top 5 Most popular professors with likes --> graph
+		4.) Make a Professor page to look at a pie graph of their likes/dislikes
+
+	Professor
+		1.) Classes they are Teaching
+		2.) Amount of students in each class they are teaching
+		3.) Classes they are recommended to teach
+
+	Student
+		1.) View Top 5 classes
+		2.) view top 5 lessons
+
+TDL
+    Add like functionality in the pages
+	parameterize the class page
+		2.likes and dislikes
+		4.comments
+	parameterize the lesson page
+	    1.course
+		2.likes and dislikes
+		4.comments
+	parameterize the professors page
+		1.) show the pie graph of their likes and dislikes
+		2.) show the classes they are teaching
+		3.) likes
+	View all lessons
+	    1.)tables of lessons with links that lead to the parameterize lesson page
+
+	authentication
+	    1.) Make professor page personalized for the user.
+	comments
+	    1.)Let there be comments for  teachers
+	    2.)Let there be comments for  lessons
+	    3.)Let there be comments for  courses
+	admin
+	    1.)graphs
+	Add View all for students page
+	    1.) For professors with their respective links
+	    2.) For courses with their respective links
+
+	social media integration
+        1.)Add facebook and other social links
+
+    Parameterizing_TDL
+        1.) In The Models
+            a.) add a slug field for lessons, professors and courses
+            b.) override the save function to save the slug using the slugify method
+            c.) make a default setting option
+            d.) migrate
+
+        2.) In Views
+            a.) make a function for lesson, people, and course
+                that accepts request and slug field parameters
+            b.) do a query that will pass the object into the render()
+            c.)make an exception that will pass if DoesNotExist
+
+        3.) Template
+            a.) Make a template with the embedded
+        4.) Parameterised Url Mapping
+            a.) make a regex parameter to pass to the view
+
+        5.) Add links using the slug field parameter
+
+
+    TDL right now
+        2.) comments
+        3.) graphs
+
+
+class comment (models.Model):
+    parentId = models.ForeignKey('self', null=True)
+    course = models.ForeignKey(course, null=True)
+    lesson = models.ForeignKey(lesson, null=True)
+    professor = models.ForeignKey(People, null=True)
+    comment_text = models.CharField(max_length = 250, default='default')
+    hideBit = models.IntegerField(max_length=1, default=0)
+    likes = models.IntegerField(default = 0)
+    name = models.CharField(max_length=20, default=0)
+
+    def __unicode__(self):
+        return str(self.parentId)
+
+class ratings (models.Model):
+    people = models.ForeignKey('People')
+    comment = models.ForeignKey('comment')
+    like = models.CharField(max_length=10)
+    rate = models.IntegerField()
+
+    def __unicode__(self):
+        return self.rate

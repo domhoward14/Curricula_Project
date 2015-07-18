@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Registration</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div id="wrapper">
+        <div class="container-fluid">
+                <!-- Page Heading -->
+                <div class="row">
+                    </br>
+                    </br>
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Recommend A Course !
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li>
+                        <a href="/newsfeed/viewAllClasses.html"><i class="fa fa-fw fa-dashboard"></i> Find Classes</a>
+                    </li>
+                    <li>
+                        <a href="/newsfeed/recommendCourse.html/"><i class="fa fa-fw fa-bar-chart-o"></i> Make Course Recommendations</a>
+                    </li>
+                    <li>
+                        <a href="/newsfeed/recommendLesson.html"><i class="fa fa-fw fa-edit"></i> Make Lesson Recommendations</a>
+                    </li>
+                    <li>
+                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Log Out</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+    </div>
+    </br>
+    </br>
+    </class>
+    <form id="RecommendForm" method="post" action="/newsfeed/recommendCourse.html/">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+        {% for field in form.visible_fields %}
+            {{ field.errors }}
+            {{ field.help_text }}
+            {{ field }}
+            <br/>
+        {% endfor %}
+        <input type="submit" name="submit" value="Recommend"/>
+    </form>
+</body>
+</html>
