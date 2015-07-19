@@ -92,8 +92,9 @@ TDL
 
 
     TDL right now
-        2.) comments
+        2.) comments -> add the like functionality to the comments
         3.) graphs
+        4.) social integration
 
 
 class comment (models.Model):

@@ -8,6 +8,30 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.min.js"></script>
+
+    <style>
+#placeholder
+    {
+    width: 1000px;
+    height: 200px;
+    }
+</style>
+
+  <script type="text/javascript">
+  var d1 = {{ List }};
+
+$(document).ready(function () {
+    $.plot($("#placeholder"), [
+        {
+            data: d1,
+            bars: {
+                show: true
+            }
+        }
+
+    ]);
+});
+</script>
 </head>
 <body>
      <div id="page-wrapper">
@@ -114,30 +138,71 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-sm-12">
-                <h1>
-                    Graph 1
-                </h1>
+
+                <div class="container">
+                    <div class="row">
+                         <div class="col-sm-12">
+                                 <h1> Top 5 Most Liked Classes </h1>
+                         </div>
+                    </div>
+                <div class="container">
+                    <div class="row">
+                         <div class="col-sm-12">
+                             {% for name in NameList %}
+                                <strong><a href="/newsfeed/course/{{ name }}/">{{ name }}</a></strong>
+                             {% endfor %}
+                         </div>
+                </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="placeholder"></div>
+                </div>
             </div>
-            <div class="col-sm-12">
-                [Insert Graph here !]
+        </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                         <div class="col-sm-12">
+                                 <h1> Top 5 Most Liked Lessons </h1>
+                         </div>
+                    </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12-s">
+                        {% if Lessons %}
+                             <table class="table">
+                                <thead>
+                                    <th>Lesson</th>
+                                    <th>Course</th>
+                                    <th>Likes</th>
+                                    <th>Dislikes</th>
+                                </thead>
+                        {% for Lesson in Lessons %}
+                                <tbody>
+                                <tr>
+                                    <td><a href="/newsfeed/lesson/{{Lesson.slug }}">{{ Lesson.lesson_name}}</a></td>
+                                    <td>{{ Lesson.courseString }}</td>
+                                    <td>{{ Lesson.likes }}</td>
+                                    <td>{{ Lesson.dislikes }}</td>
+                                </tr>
+                    {% endfor %}
+                    {% else %}
+                             <h1>Currently no lessons !</h1>
+                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="placeholder"></div>
+                </div>
             </div>
-            <div class="col-sm-12">
-                <h1>
-                    Graph 2
-                </h1>
-            </div>
-            <div class="col-sm-12">
-                [Insert Graph here !]
-            </div>
-            <div class="col-sm-12">
-                <h1>
-                    Graph 3
-                </h1>
-            </div>
-            <div class="col-sm-12">
-                [Insert Graph here !]
-            </div>
+        </div>
+                </div>
         </div>
     </div>
     <!-- jQuery -->

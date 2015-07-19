@@ -83,10 +83,9 @@ class wishList(models.Model):
         return self.student
 
 class comment (models.Model):
-    parentId = models.ForeignKey('self', null=True)
-    course = models.ForeignKey(course, null=True)
-    lesson = models.ForeignKey(lesson, null=True)
-    professor = models.ForeignKey(People, null=True)
+    course = models.CharField(default="Null", null=True, max_length=20)
+    lesson = models.CharField(default="Null", null=True, max_length=20)
+    professor = models.CharField(default="Null", null=True, max_length=20)
     comment_text = models.CharField(max_length = 250, default='default')
     hideBit = models.IntegerField(max_length=1, default=0)
     likes = models.IntegerField(default = 0)
@@ -98,7 +97,7 @@ class comment (models.Model):
         super(comment, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return str(self.parentId)
+        return str(self.comment_text)
 
 class recommendedList(models.Model):
     student = models.ForeignKey(People)

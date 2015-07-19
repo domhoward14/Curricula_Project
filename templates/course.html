@@ -69,7 +69,7 @@
     </div>
      <div class="col-12-s">
          <center>
-             {{ Courses.courseDesc }}
+         <strong>{{ Courses.courseDesc }}</strong>
          </center>
      </div>
     </br>
@@ -144,25 +144,49 @@
             </div>
         </div>
     {% if Comments %}
+        <tr>
+            <h1>Comments</h1>
+        </tr>
+        {% for comment in Comments %}
         <div class="row">
             <div class="col-4-s">
                 <table class="table">
-                        <thead>
-                          <tr>
-                            <th>Comments</th>
-                          </tr>
-                        </thead>
                         <tbody>
                         <tr>
-                            <td>{{ Lesson.lessonDesc }}</td>
+                            <td>@{{ comment.timeStamp }} <strong>{{ comment.name }}</strong> Says:</td>
+                            <td>{{ comment.comment_text }}</td>
                         </tr>
+                         {% endfor %}
                         </tbody>
             </table>
             </div>
         </div>
     {% else %}
+        <h1>Comments</h1>
         <bold> Currently no comments to display !</bold>
     {% endif %}
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <h1>Write Your Comments Below !</h1>
+        <form id="comments" method="post" action="/newsfeed/lesson/{{Courses.slug}}/">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+        {% for field in form.visible_fields %}
+            {{ field.errors }}
+        <div class="row">
+            <div class="col-12-s">
+                {{ field.help_text }}
+                {{ field }}
+            </div>
+        </div>
+            <br/>
+            {% endfor %}
+            <input type="submit" name="submit" value="Comment"/>
+        </form>
     </div>
 
     <!-- jQuery -->

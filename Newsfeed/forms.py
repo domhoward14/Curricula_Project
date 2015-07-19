@@ -1,5 +1,5 @@
 from django import forms
-from Newsfeed.models import People, course, lesson
+from Newsfeed.models import People, course, lesson, comment
 
 
 def getStudents():
@@ -20,6 +20,18 @@ def getCourses():
         list.append((name, name, ))
     return list
 
+def getLessons():
+    classList = lesson.objects.all()
+    list=[]
+    for Lesson in classList:
+        name = Lesson.lesson_name
+        list.append((name, name, ))
+    return list
+
+def getCourseObj():
+    classList = course.objects.all()[0]
+    return classList
+
 class NewUserForm(forms.ModelForm):
     role = forms.CharField(widget=forms.HiddenInput(), initial='student')
     first_name = forms.CharField(max_length=128, help_text="Please Enter Your First Name")
@@ -34,7 +46,23 @@ class NewUserForm(forms.ModelForm):
         model = People
         fields = ('first_name', 'last_name', 'email', 'phone_number', 'password')
 
-#class comments(forms.ModelForm):
+class comments(forms.ModelForm):
+    name = forms.CharField(max_length=20, help_text="Name" )
+    comment_text = forms.CharField(max_length=250, help_text="Text")
+    course = forms.ChoiceField(choices=getCourses())
+
+    class Meta:
+        model = comment
+        fields = ('name','comment_text', 'course')
+
+class lessComments(forms.ModelForm):
+    name = forms.CharField(max_length=20, help_text="Name" )
+    comment_text = forms.CharField(max_length=250, help_text="Text")
+    course = forms.ChoiceField(choices=getLessons())
+
+    class Meta:
+        model = comment
+        fields = ('name','comment_text', 'course')
 
 
 def getList():

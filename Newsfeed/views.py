@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from Newsfeed.forms import *
 from Newsfeed.models import *
+import datetime
 
 def index(request):
     return render(request, 'Login.html')
@@ -61,11 +62,6 @@ def recLesson(request):
         form = recommendedLessons()
         return render(request, 'recommendLesson.html', {'form': form})
 
-
-
-
-
-
 def student(request):
     courses = course.objects.order_by('-likes')
     courses = courses.filter(hideBit=0)
@@ -77,16 +73,40 @@ def student(request):
     context_dict = {'courses':courses, 'people':people, 'lessons':lessons}
     return render(request, 'studentPage.html', context_dict)
 
+def getProfLikes(Courses):
+    list = []
+    nameList = []
+    i = 0
+    for course in Courses:
+        list.append([i,course.likes])
+        nameList.append(course.course_name)
+        i +=2
+    return list,nameList
+
 def professor(request, slugName):
     Professor = People.objects.get(slug = slugName)
     Courses = course.objects.filter(professor = Professor.first_name)
-    context_dict = {'Courses':Courses, 'Professor':Professor}
+    List,NameList = getProfLikes(Courses)
+    context_dict = {'Courses':Courses, 'Professor':Professor, 'List':List, 'NameList':NameList}
     return render(request, 'professorsPage.html', context_dict)
 
+def getPopCourseLikes(Courses):
+    list = []
+    nameList = []
+    i = 0
+    for course in Courses:
+        list.append([i,course.likes])
+        nameList.append(course.slug)
+        i += 2
+    return list,nameList
+
 def admin(request):
+    Courses = course.objects.order_by('-likes')[:5]
+    List, NameList = getPopCourseLikes(Courses)
     courses = course.objects.filter(hideBit = 1)
     lessons = lesson.objects.filter(hideBit = 1)
-    context_dict = {'courses':courses, 'lessons':lessons}
+    Lessons = lesson.objects.order_by("-likes")[:5]
+    context_dict = {'courses':courses, 'lessons':lessons, 'List':List, 'NameList':NameList, 'Lessons':Lessons}
     return render(request, 'adminPage.html', context_dict)
 
 def allClasses(request):
@@ -115,17 +135,51 @@ def courseAddDislike(request, slugName):
     Course.save()
     return render(request, 'success.html')
 
+def updateDb(text, slugName):
+    Course = course.objects.filter(slug=slugName)
+    Comment = comment.objects.filter(comment_text=text)
+    Comment.course = Course.course_name
+
 def coursePage(request, slugName):
     Courses = course.objects.get(slug = slugName)
     Lessons = lesson.objects.filter(courseString = Courses.course_name)
     Professor = People.objects.get(first_name=Courses.professor)
-    context_dict = {'Courses' : Courses,'Lessons' : Lessons, 'Professor':Professor}
-    return render(request, 'course.html', context_dict)
+    Comments = comment.objects.filter(course=Courses.course_name)
+
+    if request.method == 'POST':
+        form = comments(request.POST)
+
+        if form.is_valid():
+            #form.timeStamp = datetime.datetime.today()
+            form.save(commit=True)
+            return render(request, 'success.html')
+
+        else:
+            print form.errors
+    else:
+        form = comments()
+        context_dict = {'Courses' : Courses,'Lessons' : Lessons, 'Professor':Professor, 'Comments':Comments,'form': form}
+        return render(request, 'course.html', context_dict)
 
 def lessonPage(request, slugName):
     Lesson = lesson.objects.get(slug = slugName)
     Course = course.objects.get(course_name = Lesson.courseString)
-    context_dict = {'Lesson' : Lesson, 'Course' : Course}
+    Comments = comment.objects.filter(course=Lesson.lesson_name)
+
+    if request.method == 'POST':
+        form = lessComments(request.POST)
+
+        if form.is_valid():
+            #form.timeStamp = datetime.datetime.today()
+            form.save(commit=True)
+            return render(request, 'success.html')
+
+        else:
+            print form.errors
+    else:
+        form = lessComments()
+
+    context_dict = {'Lesson' : Lesson, 'Course' : Course, 'Comments':Comments,'form': form}
     return render(request, 'LessonPage.html', context_dict)
 
 def lessonAddLike(request, slugName):
